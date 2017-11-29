@@ -18,16 +18,19 @@ while True:
     result = check.read()
     if result.is_valid():
         camera.start_preview()
-        sleep(300)
-        camera.annotate_text = (datetime.datetime.now().strftime('%d-%m-%y-%H-%M')
+        sleep(5)
+        # wait 5 seconds to allow for camera to correct exposure
+        camera.annotate_text = (datetime.datetime.now().strftime('%d-%m-%y %H:%M')
                                 + '\n'
                                 + '=' * 20
                                 + '\n'
-                                + '{} degrees C'.format(result.temperature)
+                                + '-{} C'.format(result.temperature)
                                 + '\n'
-                                + '{} % humidity'.format(result.humidity))
+                                + '-{}%'.format(result.humidity))
         camera.capture(('/home/pi/Desktop/{}.jpg'
                         .format('weather_check-' +
                                 datetime.datetime.now().strftime(
-                                    '%d_%m_%y_%H_%M'))))
+                                    '%d_%m_%y-%H_%M'))))
         camera.stop_preview()
+        sleep(255)
+        # wait about 5 minutes until next loop
